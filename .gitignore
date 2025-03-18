@@ -5,3 +5,5 @@ __pycache__/
 ~/.logcli_token
 v
 tools.py
+build
+dist

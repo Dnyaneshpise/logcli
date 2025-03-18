@@ -82,3 +82,49 @@ def logout():
         ║  🔍 You were already logged out.      ║
         ╚══════════════════════════════════════╝
         """)
+
+
+def register(name, email, password, role="user"):
+    url = f"{BASE_URL}/api/users/register"
+    
+    # Prepare the registration payload
+    payload = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "role": role
+    }
+
+    print(r"""
+    ╔════════════════════════════════════════════════╗
+    ║  🛸 REGISTERING NEW USER... PLEASE WAIT...    ║
+    ║  📡 Connecting to Flight Data Logger...       ║
+    ╚════════════════════════════════════════════════╝
+    """)
+
+    response = requests.post(url, json=payload)
+    show_progress_bar()  # Show progress bar effect
+
+    # Send the registration request
+
+    if response.status_code == 201:
+        print(r"""
+        ╔════════════════════════════════════════════════╗
+        ║  🎉 USER REGISTERED SUCCESSFULLY!              ║
+        ║  🚀 Welcome to the Flight Data Logger System!  ║
+        ╠════════════════════════════════════════════════╣
+        ║  🌍 Your account has been created.             ║
+        ║  🚀 Logging you in now...                      ║
+        ╚════════════════════════════════════════════════╝
+        """)
+        # Attempt to login after successful registration
+        login(email, password)
+    else:
+        print(rf"""
+        ╔══════════════════════════════════════════════╗
+        ║  ❌ REGISTRATION ERROR!                       ║
+        ║  🔥 Status Code: {response.status_code}             ║
+        ║  📝 Error: {response.text}                     ║
+        ║  🚀 Please try again with valid details!      ║
+        ╚══════════════════════════════════════════════╝
+        """)

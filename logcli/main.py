@@ -1,11 +1,17 @@
 import argparse
-from logcli.utils.auth import login, logout
+from logcli.utils.auth import login, logout ,register
 from logcli.utils.logs import upload_log, get_logs, view_log, download_log
 
 def main():
     parser = argparse.ArgumentParser(description="Flight Data Logger CLI")
     
     subparsers = parser.add_subparsers(dest="command")
+
+    register_parser = subparsers.add_parser("register", help="Register a new user and login")
+    register_parser.add_argument("name", help="User's full name")
+    register_parser.add_argument("email", help="User email")
+    register_parser.add_argument("password", help="User password")
+    register_parser.add_argument("--role", help="User role (default: user)", default="user")
 
     # Login
     login_parser = subparsers.add_parser("login", help="Login to the system")
@@ -36,6 +42,8 @@ def main():
 
     if args.command == "login":
         login(args.email, args.password)
+    elif args.command == "register":
+        register(args.name, args.email, args.password, args.role)
     elif args.command == "logout":
         logout()
     elif args.command == "upload":
@@ -51,3 +59,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
